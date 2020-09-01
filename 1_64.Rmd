@@ -24,12 +24,11 @@ for(i in 1:length(file_names)){
 ```
 
 ```{r}
-# select only the accuracy data
+# select accuracy and reaction time columns only 
 selected_files = list()
 for(i in 1:length(files)){
-  selected_files[[i]] = files[[i]] %>% select(ImageFile, study_same_key.keys, key_resp_10.keys,study_same_key.rt, erRT = key_resp_10.rt)
+  selected_files[[i]] = files[[i]] %>% select(ImageFile, study_same_key.keys, key_resp_10.keys,study_same_key.rt, key_resp_10.rt)
 }
-
 
 ```
 
@@ -101,7 +100,7 @@ accuracy_with_id = data.frame(accuracy_with_id)
 - dropping outliers for response time
 
 ```{r}
-#extract columns related to response time
+#extract response time columns
 response_time_data = list()
 for(i in 1:length(selected_files)){
   response_time_data[[i]] = selected_files[[i]] %>% select("trial","neutralResponseTime", "erresponseTime")
@@ -117,6 +116,6 @@ for(i in 1:length(response_time_data)){
   neutral_response_time = temp$neutralResponseTime
   outlier_index[[i]] = which(abs(neutral_response_time - mean(neutral_response_time, na.rm = TRUE)) > 3 * sd(neutral_response_time, na.rm = TRUE))
 }
-
+which(neutral_response_time > mean(neutral_response_time,na.rm = TRUE) + 3*sd(neutral_response_time, na.rm = TRUE))
 ```
 
